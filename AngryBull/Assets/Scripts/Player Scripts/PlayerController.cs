@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private float playerSpeed = 20.0f;
+    private float playerSpeed = 10.0f;
     [SerializeField]
     private float jumpHeight = 1.0f;
     [SerializeField]
@@ -69,4 +69,25 @@ public class PlayerController : MonoBehaviour
             child.rotation = Quaternion.Lerp(child.rotation, rotation, Time.deltaTime * rotationSpeed);
         }
     }
+
+
+    void OnCollisionEnter(Collision collisionInfo)
+    {
+        Debug.Log(collisionInfo.collider.name);
+        /*
+        if(collisionInfo.collider.tag == "enemyTag")
+        {
+            Debug.Log("we hit an enemy");
+        }*/
+    }
+
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "enemyTag")
+        {
+            //Damage enemy
+            Debug.Log("has damaged enemy");
+        }
+    }*/
 }
