@@ -5,7 +5,7 @@ using UnityEngine;
 public class Stat
 {
     [SerializeField]
-    private int baseValue;
+    private int baseValue=0;
 
     public int GetValue ()
     {

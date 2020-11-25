@@ -14,13 +14,11 @@ public class CharacterStats : MonoBehaviour
     }
 
 
-    void Update()
-    {
- 
-    }
 
     public void TakeDamage (int damage)
     {
+        Debug.Log(currentHealth);
+    
         currentHealth -= damage;
         Debug.Log(transform.name + " takes "+ damage + " damage.");
     

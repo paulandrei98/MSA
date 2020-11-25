@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+
+//for combat
+[RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour
 {
     public float lookRadius = 10f;
@@ -10,6 +13,11 @@ public class EnemyController : MonoBehaviour
     NavMeshAgent agent;
     Animator animator; //link the animator
 
+    //for the combat
+    PlayerManager playerManager;
+    CharacterStats myStats;
+    CharacterCombat combat;
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +25,10 @@ public class EnemyController : MonoBehaviour
         target = PlayerManager.instance.player.transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();    
+        //for combat
+        playerManager = PlayerManager.instance;
+        myStats = GetComponent<CharacterStats>();
+        combat = GetComponent<CharacterCombat>();
     }
 
     // Update is called once per frame
@@ -39,8 +51,25 @@ public class EnemyController : MonoBehaviour
             //attack the target
             //face the target
             FaceTarget();
-            animator.SetBool("isRunning", false);
+            animator.SetBool("isAttacking",true);
 
+            //for combat
+            CharacterStats targetStats = target.GetComponent<CharacterStats>();
+            if(targetStats != null)
+            {
+                combat.Attack(targetStats);
+            }
+            CharacterCombat playerCombat = playerManager.player.GetComponent<CharacterCombat>();
+            if(playerCombat != null)
+            {
+                playerCombat.Attack(myStats);
+            }
+            //animator.SetBool("isRunning", false);
+
+        }
+        else
+        {
+            animator.SetBool("isAttacking",false);
         }
     }
 
