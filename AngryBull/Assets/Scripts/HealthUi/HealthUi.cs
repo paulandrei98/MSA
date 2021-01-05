@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CharacterStats))]
+[RequireComponent(typeof(PlayerController))]
 public class HealthUi : MonoBehaviour
 {
 
@@ -33,7 +33,7 @@ public class HealthUi : MonoBehaviour
             }
         }
 
-        GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
+        GetComponent<PlayerController>().OnHealthChanged += OnHealthChanged;
     }
 
     void OnHealthChanged(int maxHealth, int currentHealth){

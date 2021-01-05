@@ -1,0 +1,161 @@
+fileFormatVersion: 2
+guid: 8314cf769c340434ba2dbc28a0161079
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: arm_1_L
+    100004: arm_1_R
+    100006: arm_2_L
+    100008: arm_2_R
+    100010: body
+    100012: chest
+    100014: finger_1_L
+    100016: finger_1_R
+    100018: finger_2_L
+    100020: finger_2_R
+    100022: finger_3_L
+    100024: finger_3_R
+    100026: finger_L
+    100028: finger_R
+    100030: Golem
+    100032: hand_L
+    100034: hand_R
+    100036: head
+    100038: Leg_L_1
+    100040: Leg_L_2
+    100042: Leg_L_3
+    100044: Leg_R_1
+    100046: Leg_R_2
+    100048: Leg_R_3
+    100050: Root_M
+    100052: shoulder_L
+    100054: shoulder_R
+    100056: toes_L
+    100058: toes_R
+    400000: //RootNode
+    400002: arm_1_L
+    400004: arm_1_R
+    400006: arm_2_L
+    400008: arm_2_R
+    400010: body
+    400012: chest
+    400014: finger_1_L
+    400016: finger_1_R
+    400018: finger_2_L
+    400020: finger_2_R
+    400022: finger_3_L
+    400024: finger_3_R
+    400026: finger_L
+    400028: finger_R
+    400030: Golem
+    400032: hand_L
+    400034: hand_R
+    400036: head
+    400038: Leg_L_1
+    400040: Leg_L_2
+    400042: Leg_L_3
+    400044: Leg_R_1
+    400046: Leg_R_2
+    400048: Leg_R_3
+    400050: Root_M
+    400052: shoulder_L
+    400054: shoulder_R
+    400056: toes_L
+    400058: toes_R
+    2100000: Golem_M
+    4300000: Golem
+    7400000: idle
+    7400002: walk
+    7400004: run
+    7400006: jump
+    7400008: attack_1
+    7400010: attack_2
+    7400012: hit
+    7400014: stun
+    7400016: death
+    9500000: //RootNode
+    13700000: Golem
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

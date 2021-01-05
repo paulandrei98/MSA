@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
+    
     #region Singleton
 
     public static PlayerManager instance;
@@ -21,6 +22,13 @@ public class PlayerManager : MonoBehaviour
 
     public void KillPlayer()
     {
+        //StartCoroutine(ReloadScene());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
+    }
+
+    IEnumerator ReloadScene(){
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

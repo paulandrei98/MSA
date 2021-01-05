@@ -1,22 +1,28 @@
 ﻿
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
-//for combat
-[RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour
 {
     public float lookRadius = 10f;
 
     Transform target;
     NavMeshAgent agent;
-    Animator animator; //link the animator
+    Animator animator;
+    [SerializeField] int damage;
+    public float attackCooldown = 2;
+    float lastAttackTime = 0;
 
-    //for the combat
     PlayerManager playerManager;
-    CharacterStats myStats;
+
     CharacterCombat combat;
+    public int maxHealth = 100;
+    public int score = 10;
+    int currentHealth;
+    public static bool isDead;
+    public event System.Action<int, int> OnHealthChanged;
 
 
     // Start is called before the first frame update
@@ -25,65 +31,113 @@ public class EnemyController : MonoBehaviour
         target = PlayerManager.instance.player.transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();    
-        //for combat
         playerManager = PlayerManager.instance;
-        myStats = GetComponent<CharacterStats>();
-        combat = GetComponent<CharacterCombat>();
+        currentHealth = maxHealth;
+
     }
 
-    // Update is called once per frame
+    PlayerController playerHealth;
+
+    void Awake()
+    {
+         playerHealth = FindObjectOfType<PlayerController>();
+    }
     void Update()
     {
         float distance = Vector3.Distance(target.position ,transform.position);
 
         if(distance <= lookRadius)
         {
-            agent.SetDestination(target.position);
-            animator.SetBool("isRunning", true);
+    
+
+            isDead = PlayerController.isdead;
+            if(isDead == false)
+            {
+              animator.SetBool("isRunning",false);  
+            }
+            else
+            {
+                agent.SetDestination(target.position);
+                animator.SetBool("isRunning", true);
+            }
         }
         else
         {
             animator.SetBool("isRunning", false);
         }
-
         if(distance <= agent.stoppingDistance)
         {
-            //attack the target
-            //face the target
-            FaceTarget();
             animator.SetBool("isAttacking",true);
+            if(Time.time - lastAttackTime >= attackCooldown)
+            {
+                target.GetComponent<PlayerController>().CheckHealth();
+                if(playerHealth.currentHealth <= 0)
+                {
+                    animator.SetBool("isAttacking",false);
+                }
+                else
+                {
+                    lastAttackTime = Time.time;
+                    target.GetComponent<PlayerController>().TakeDamage(damage);
+                    
+                }
 
-            //for combat
-            CharacterStats targetStats = target.GetComponent<CharacterStats>();
-            if(targetStats != null)
-            {
-                combat.Attack(targetStats);
             }
-            CharacterCombat playerCombat = playerManager.player.GetComponent<CharacterCombat>();
-            if(playerCombat != null)
-            {
-                playerCombat.Attack(myStats);
-            }
-            //animator.SetBool("isRunning", false);
+
+            
 
         }
         else
         {
+            
             animator.SetBool("isAttacking",false);
+            
         }
+
     }
+
 
     void FaceTarget()
     {
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation,lookRotation,Time.deltaTime * 5f);
-
     }
+
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,lookRadius);
+
+    }
+
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -=damage;
+        Debug.Log("Enemy takes "+damage);
+        if(OnHealthChanged != null)
+        {
+            OnHealthChanged(maxHealth,currentHealth);
+        }
+        if(currentHealth <= 0)
+        {
+            StartCoroutine(Die());
+            
+        }
+    
+    }
+    IEnumerator Die()
+    {
+        animator.SetTrigger("dead");
+        Debug.Log("Enemy died! ");
+        target.GetComponent<GameController>().AddScore(score);
+        GetComponent<Collider>().enabled = false;
+        this.enabled = false;
+
+        yield return  new WaitForSeconds(1.5f);
+        Destroy(gameObject);
+
     }
 }

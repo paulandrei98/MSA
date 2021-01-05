@@ -1,25 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    Animator animator;
 
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private float playerSpeed = 10.0f;
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    public float playerSpeed = 6.0f;
     [SerializeField]
-    private float jumpHeight = 1.0f;
-    [SerializeField]
-    private float gravityValue = -9.81f;
-    private float rotationSpeed = 4f;
 
     private Transform cameraMain;
     private Transform child;
 
     private Player playerInput;
+
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
+    public int doDamage = 25;
+    public float attackRate = 2f;
+    float nextAttackTime = 0;
+    public static bool isdead = true;
+
+    public event System.Action<int, int> OnHealthChanged;
 
     private void Awake(){
         playerInput =  new Player();
@@ -37,12 +49,24 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         cameraMain = Camera.main.transform;
         child = transform.GetChild(0).transform;
+        currentHealth = maxHealth;
+        Debug.Log(currentHealth);
     }
 
     void Update()
     {
+        if(Time.time >= nextAttackTime)
+        {
+            if(playerInput.PlayerMain.Attack.triggered)
+            {
+                Attack();
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
+        }
+
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -52,42 +76,98 @@ public class PlayerController : MonoBehaviour
         Vector3 move = (cameraMain.forward * movementInput.y + cameraMain.right * movementInput.x);
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
-
-
-        // Changes the height position of the player..
-        if (playerInput.PlayerMain.Jump.triggered && groundedPlayer)
+        if(movementInput.x != 0 || movementInput.y != 0)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking",false);
         }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
 
-        if(movementInput != Vector2.zero)
+        Vector3 currentPosition = transform.position;
+        Vector3 newPosition = new Vector3(movementInput.x, 0, movementInput.y);
+        Vector3 positionToLookAt = currentPosition + newPosition;
+
+        transform.LookAt(positionToLookAt);
+
+
+
+       
+
+        void Attack()
         {
-            Quaternion rotation = Quaternion.Euler(new Vector3(child.localEulerAngles.x, cameraMain.localEulerAngles.y, child.localEulerAngles.z));
-            child.rotation = Quaternion.Lerp(child.rotation, rotation, Time.deltaTime * rotationSpeed);
+            animator.SetTrigger("attack");
+
+            Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange,enemyLayers);
+        
+            foreach(Collider enemy in hitEnemies)
+            {
+                enemy.GetComponent<EnemyController>().TakeDamage(doDamage);
+                Debug.Log("we hit"+ enemy.name);
+            }
         }
     }
 
-
-    void OnCollisionEnter(Collision collisionInfo)
+    public void TakeDamage(int damage)
     {
-        Debug.Log(collisionInfo.collider.name);
-        /*
-        if(collisionInfo.collider.tag == "enemyTag")
+
+        currentHealth -=damage;
+        Debug.Log("Player takes "+damage);
+        Debug.Log("Player HP: " + currentHealth);
+        if(OnHealthChanged != null)
         {
-            Debug.Log("we hit an enemy");
-        }*/
+            OnHealthChanged(maxHealth,currentHealth);
+        }
+        CheckHealth();
+
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
+    public virtual void CheckHealth()
     {
-        if(other.tag == "enemyTag")
+        if(currentHealth >= maxHealth)
         {
-            //Damage enemy
-            Debug.Log("has damaged enemy");
+            currentHealth = maxHealth;
         }
-    }*/
+        if(currentHealth <= 0)
+        {
+            currentHealth = 0;
+            if(isdead == true)
+            {
+                Die();
+            }
+            
+        }
+    }
+
+    public GameObject show;
+    public GameObject hide1;
+    public GameObject hide2;
+    public void Die()
+    {
+        if(isdead == true )
+        {
+            animator.SetBool("isDead", true);
+            Debug.Log("Player died! ");
+        }
+        isdead = false;
+
+        show.SetActive(true);  
+        hide1.SetActive(false);
+        hide2.SetActive(false);
+        Time.timeScale = 0;
+        GetComponent<PlayerController>().enabled = false;   
+
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if(attackPoint == null)
+            return;
+
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+
 }
