@@ -22,6 +22,7 @@ public class EndLevel : MonoBehaviour
     public void nextLevel()
     {
         Debug.Log("Nex Level comming soon !");
+        SceneManager.LoadScene("Scene2");
         Time.timeScale = 1;
     }
 }

@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private void Awake(){
         playerInput =  new Player();
         controller = GetComponent<CharacterController>();
+        isdead = true;
     }
 
     private void OnEnable(){
@@ -156,7 +157,6 @@ public class PlayerController : MonoBehaviour
         show.SetActive(true);  
         hide1.SetActive(false);
         hide2.SetActive(false);
-        Time.timeScale = 0;
         GetComponent<PlayerController>().enabled = false;   
 
     }

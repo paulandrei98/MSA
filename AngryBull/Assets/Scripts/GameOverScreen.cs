@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 public class GameOverScreen : MonoBehaviour
 {
     [SerializeField] public Text pointsText;
+    //[SerializeField] public TextMeshProUGUI pointsText;
 
     public void Setup(int score)
     {
@@ -13,13 +15,19 @@ public class GameOverScreen : MonoBehaviour
         pointsText.text = "Your Score "+score.ToString();
     }
 
+    void start(){
+        //Time.timeScale = 0;
+    }
+
     public void RestartButton(){
-        SceneManager.LoadScene("Scene1");
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
     }
 
     public void ExitButton(){
-        SceneManager.LoadScene("Menu");
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
+        SceneManager.LoadScene(0);
+        
     }
 }

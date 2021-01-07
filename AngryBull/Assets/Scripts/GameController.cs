@@ -8,7 +8,8 @@ public class GameController : MonoBehaviour
     public GameOverScreen GameOverScreen;
     public EndScreen end;
     public static int currScore = 0;
-    [SerializeField] Text scoreAmount;
+    //[SerializeField] Text scoreAmount;
+    [SerializeField] TextMeshProUGUI scc;
     void Start()
     {
         currScore = 0;
@@ -24,8 +25,9 @@ public class GameController : MonoBehaviour
 
     public void UpdateScoreUI()
     {
-        scoreAmount.text = currScore.ToString("0");
-        //GameOverScreen.Setup(currScore);
+        //scoreAmount.text = currScore.ToString("0");
+        scc.text = "Score : "+currScore.ToString("0");
+        GameOverScreen.Setup(currScore);
         end.Setup(currScore);
     }
 }
